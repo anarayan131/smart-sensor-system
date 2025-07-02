@@ -1,0 +1,9 @@
+FROM python:3.10-slim
+
+WORKDIR /app
+
+COPY subscriber.py .
+
+RUN pip install paho-mqtt
+
+CMD ["python3", "-u", "subscriber.py"]
