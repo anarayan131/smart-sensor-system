@@ -1,0 +1,30 @@
+version: '3.8'
+# This file defines a Docker Compose setup for an MQTT broker and two clients (publisher and subscriber).
+# The publisher sends messages to the broker, and the subscriber listens for those messages.
+
+services:
+  mosquitto:
+    image: eclipse-mosquitto
+    container_name: mosquitto
+    ports:
+      - "1883:1883"
+      - "9001:9001"
+    volumes:
+      - ./mosquitto.conf:/mosquitto/config/mosquitto.conf
+    restart: unless-stopped
+
+  publisher:
+    build: 
+      context: .
+      dockerfile: Dockerfile.publisher
+    depends_on:
+      - mosquitto
+
+  subscriber:
+    build: 
+      context: .
+      dockerfile: Dockerfile.subscriber
+    depends_on:
+      - mosquitto
+
+      
